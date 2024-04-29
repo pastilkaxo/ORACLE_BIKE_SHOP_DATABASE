@@ -26,8 +26,9 @@ EXCEPTION
     END;
 
 BEGIN
-    ADD_TO_CART(1,6,5);
+    ADD_TO_CART(2,2,5);
 END;
+
 
 
 -- DEL BIKE FROM CART
@@ -221,6 +222,7 @@ EXCEPTION
         WHEN OTHERS 
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
 END;
+
 
 
 -- UPDATE ORDER
