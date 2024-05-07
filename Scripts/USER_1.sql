@@ -1,0 +1,146 @@
+
+
+SELECT * FROM DEVELOPER.USER_V;
+SELECT * FROM DEVELOPER.BIKE_V;
+SELECT * FROM DEVELOPER.ORDER_V;
+SELECT * FROM DEVELOPER.CART_V;
+
+-- FUNCS AND PROCES
+
+--пецхярпюжхъ
+BEGIN
+ DBMS_OUTPUT.PUT_LINE(DEVELOPER.REGISTER('VLADISLAV','LEMIASHEUSKY','OLEGOVICH','VLAD.LEMESHOK@GMAIL.COM','12345','25-04-2004','MINSK',2));
+ COMMIT;
+END;
+
+--юбрнпхгюжхъ
+
+BEGIN
+ DBMS_OUTPUT.PUT_LINE(DEVELOPER.LOGIN('VLAD.LEMESHOK@GMAIL.COM','12345'));
+ COMMIT;
+END;
+
+-- днаюбкемхе аюийю
+BEGIN
+ DBMS_OUTPUT.PUT_LINE(DEVELOPER.ADD_BIKE(5,'BIKE 1',199.99,1));
+ COMMIT;
+END;
+
+-- днаюбкемхе нохяюмхъ аюийю
+BEGIN
+ DBMS_OUTPUT.PUT_LINE(DEVELOPER.ADD_DESC(8,'BRAND NEW!','STREET','STEEL',8,20));
+ COMMIT;
+END;
+
+-- днаюбкемхе нжемйх
+
+BEGIN
+ DBMS_OUTPUT.PUT_LINE(DEVELOPER.ADD_RATE(8,5,7,'NOT BAD!',SYSTIMESTAMP));
+ COMMIT;
+END;
+
+-- намнбкемхе онкэгнбюрекъ
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(DEVELOPER.UPDATE_USER(5,'VLADDDD','LEMESH','OLG','VLAD.LEMESHOK@GMAIL.COM','12345','25-04-2004','MINSK',2));
+    COMMIT;
+END;
+
+-- япедмхи пеирхмц бекняхоедю
+
+SELECT DEVELOPER.AVG_RATE(8) AS RATE FROM DUAL;
+
+-- сдюкемхе бекняхоедю
+
+BEGIN
+    DEVELOPER.DEL_BIKE(8);
+    COMMIT;
+END;
+
+-- сдюкемхе нохяюмхъ
+
+BEGIN
+    DEVELOPER.DEL_DESC(8);
+END;
+
+ROLLBACK;
+
+-- сдюкемхе нжемйх
+
+BEGIN
+    DEVELOPER.DEL_RATE(8);
+END;
+
+-- намнбкемхе нохяюмхъ
+
+BEGIN
+    DEVELOPER.UPD_DESC(1,8,'NEW NOW!','RACING','STEEL',8,20);
+END;
+
+-- намнбкемхе нжемйх
+
+BEGIN
+    DEVELOPER.UPD_RATE(8,5,4,'BAD!',SYSTIMESTAMP);
+END;
+
+-- намнбкемхе аюийю
+
+BEGIN
+    DEVELOPER.UPDATE_BIKE(8,'WTP TRIG',950,1);
+END;
+
+
+-- днаюбкемхе бекняхоедю б йнпгхмс
+
+BEGIN
+    DEVELOPER.ADD_TO_CART(5,8,10);
+    COMMIT;
+END;
+
+
+-- нвхярйю йнпгхмш
+
+BEGIN
+    DEVELOPER.CLEAR_CART(5);
+END;
+
+-- сдюкемхе аюийю хг йнпгхмш
+
+BEGIN
+    DEVELOPER.DEL_FROM_CART(5,8);
+END;
+
+-- нтнплкемхе гюйюгю
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(DEVELOPER.ADD_ORDER(5,SYSDATE,'IN WAY'));
+    COMMIT;
+END;
+
+-- намнбкемхе гюйюгю
+
+BEGIN
+    DEVELOPER.UPDATE_ORDER(1,5,8,3,SYSDATE,'ARRIVED');
+END;
+
+-- нвхярйю гюйюгнб
+
+BEGIN
+    DEVELOPER.CLEAR_ORDER(5);
+END;
+
+-- сдюкемхе гюйюгю
+
+BEGIN
+    DEVELOPER.DEL_ORDER(1);
+    COMMIT;
+END;
+
+-- онксвемхе ндмни хг рюакхж
+
+SELECT * FROM TABLE(DEVELOPER.GETUSERS());
+
+-- янпрхпнбйю дюммшу
+
+SELECT * FROM TABLE(DEVELOPER.SORT_USER_BY_ID);
+

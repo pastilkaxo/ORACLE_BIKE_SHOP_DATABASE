@@ -25,9 +25,7 @@ EXCEPTION
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
 
-BEGIN
-    ADD_TO_CART(2,2,5);
-END;
+
 
 
 
@@ -48,9 +46,7 @@ END;
             THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
     
-    BEGIN
-        DEL_FROM_CART(2,3);
-    END;
+
 
 
 
@@ -76,10 +72,7 @@ END;
         WHEN OTHERS 
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
-    
-BEGIN
-    UPDATE_PASS(1,'VLAD.LEMESHOK@GMAIL.COM','ABCDE');
-END;
+
 
 
 -- UPDATE BIKE 
@@ -105,11 +98,7 @@ EXCEPTION
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
 
-BEGIN
-    UPDATE_BIKE(2 , 'BIKE NAME2', 1203 ,1);
-END;
 
-SELECT * FROM BIKES
 
 -- DELETE USER
 
@@ -142,9 +131,6 @@ EXCEPTION
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
 
-    BEGIN
-        DEL_USER(1);
-    END;
 -- DELETE BIKE
 
     CREATE OR REPLACE PROCEDURE DEL_BIKE 
@@ -169,11 +155,6 @@ EXCEPTION
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
     
-    BEGIN
-        DEL_BIKE(2);
-    END;
-    
-    
 -- CLEAR CART 
 
     CREATE OR REPLACE PROCEDURE CLEAR_CART
@@ -197,9 +178,6 @@ EXCEPTION
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
 
-BEGIN
-    CLEAR_CART(1);
-END;
 
 -- CLEAR ORDER
 
@@ -256,9 +234,6 @@ EXCEPTION
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
 
-BEGIN
-    UPDATE_ORDER(8,1,6,13,'28.04.2024','ARRIVED');
-END;
 
 
 -- DEL ORDER
@@ -280,10 +255,7 @@ EXCEPTION
         WHEN OTHERS 
         THEN raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
     END;
-    
-    BEGIN
-        DEL_ORDER(8);
-    END;
+
 
 -- DEL ROLE
 CREATE OR REPLACE PROCEDURE DEL_ROLE
@@ -372,10 +344,6 @@ EXCEPTION
 END;
 
 
-BEGIN
-DEL_CATEGORY(1);
-END;
-
 -- UPD CATEGORY
 
 CREATE OR REPLACE PROCEDURE UPD_CATEGORY
@@ -452,7 +420,6 @@ EXCEPTION
 END;
 
 -- DEL RATE
- SELECT * FROM RATINGS;
 CREATE OR REPLACE PROCEDURE DEL_RATE
 (
 BIKE IN INTEGER
