@@ -24,7 +24,7 @@ BEGIN
 END;
 
 
--- намнкбемхе йюрецнпхх
+-- намнкбемхе пнкх
 
 BEGIN
     DEVELOPER.USER_PKG_PROC.UPD_ROLE(11,'MANAGER');
@@ -50,3 +50,15 @@ END;
 BEGIN
     DEVELOPER.USER_PKG_PROC.UPD_CATEGORY(10,'MTB');
 END;
+
+
+-- сдюкемхе онкэгнбюрекъ
+
+BEGIN
+    DEVELOPER.USER_PKG_PROC.DEL_USER(15);
+END;
+COMMIT;
+
+
+
+

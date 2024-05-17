@@ -11,28 +11,28 @@ BEGIN
         BEGIN
             UTL_FILE.GET_LINE(v_file, v_line);
             EXIT WHEN v_line IS NULL;
-            
-            MERGE INTO USERS u
-            USING (
-                SELECT 
-                    JSON_VALUE(v_line, '$.NAME') AS USER_NAME,
-                    JSON_VALUE(v_line, '$.SURNAME') AS USER_SURNAME,
-                    JSON_VALUE(v_line, '$.FATHERNAME') AS USER_FATHERNAME,
-                    JSON_VALUE(v_line, '$.EMAIL') AS USER_EMAIL,
-                    JSON_VALUE(v_line, '$.PASSWORD') AS PASSWORD,
-                    TO_DATE(JSON_VALUE(v_line, '$.BIRTH'), 'YYYY-MM-DD"T"HH24:MI:SS') AS DATE_OF_BIRTH,
-                    JSON_VALUE(v_line, '$.ADRESS') AS ADRESS,
-                    JSON_VALUE(v_line, '$.ROLE') AS ROLE_ID
-                FROM DUAL
-            ) json_data
-            ON (u.USER_EMAIL = json_data.USER_EMAIL)
-            WHEN NOT MATCHED THEN
-                INSERT (USER_NAME, USER_SURNAME, USER_FATHERNAME, USER_EMAIL, PASSWORD, DATE_OF_BIRTH, ADRESS, ROLE_ID)
-                VALUES (json_data.USER_NAME, json_data.USER_SURNAME, json_data.USER_FATHERNAME, json_data.USER_EMAIL, json_data.PASSWORD, json_data.DATE_OF_BIRTH, json_data.ADRESS, json_data.ROLE_ID);
+
+            INSERT INTO USERS (USER_NAME, USER_SURNAME, USER_FATHERNAME, USER_EMAIL, PASSWORD, DATE_OF_BIRTH, ADRESS, ROLE_ID)
+            SELECT 
+                jt.USER_NAME, jt.USER_SURNAME, jt.USER_FATHERNAME, jt.USER_EMAIL, jt.PASSWORD, TO_DATE(SUBSTR(jt.DATE_OF_BIRTH, 1, 10), 'YYYY-MM-DD'), jt.ADRESS, jt.ROLE_ID
+            FROM JSON_TABLE(v_line, '$[*]'
+                COLUMNS (
+                    USER_NAME PATH '$.NAME',
+                    USER_SURNAME PATH '$.SURNAME',
+                    USER_FATHERNAME PATH '$.FATHERNAME',
+                    USER_EMAIL PATH '$.EMAIL',
+                    PASSWORD PATH '$.PASSWORD',
+                    DATE_OF_BIRTH PATH '$.BIRTH',
+                    ADRESS PATH '$.ADRESS',
+                    ROLE_ID PATH '$.ROLE'
+                )
+            ) jt;
                 
         EXCEPTION
             WHEN NO_DATA_FOUND THEN
                 EXIT;
+            WHEN OTHERS THEN
+                RAISE;
         END;
     END LOOP;
     UTL_FILE.FCLOSE(v_file);
@@ -44,8 +44,92 @@ EXCEPTION
         RAISE;
 END;
 
+
+
 BEGIN
     IMPORT_USERS_FROM_JSON();
 END;
+
+------------------------------------------
+
+
+
+CREATE OR REPLACE PROCEDURE IMPORT_BIKES_FROM_JSON
+IS
+    v_file UTL_FILE.FILE_TYPE;
+    v_line VARCHAR2(4000);
+BEGIN
+    v_file := UTL_FILE.FOPEN('BIKES_JSON', 'BIKES.JSON', 'R');
+    LOOP
+        BEGIN
+            UTL_FILE.GET_LINE(v_file, v_line);
+            EXIT WHEN v_line IS NULL;
+
+            INSERT INTO BIKES (SELLER_ID, BIKE_NAME, PRICE, CATEGORY_ID)
+            SELECT jt.SELLER_ID, jt.BIKE_NAME, jt.PRICE, jt.CATEGORY_ID
+            FROM JSON_TABLE(v_line, '$[*]'
+                COLUMNS (
+                    SELLER_ID PATH '$.SELLER',
+                    BIKE_NAME PATH '$.NAME',
+                    PRICE PATH '$.PRICE',
+                    CATEGORY_ID PATH '$.CATEGORY'
+                )
+            ) jt;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                EXIT;
+        END;
+    END LOOP;
+    UTL_FILE.FCLOSE(v_file);
+END;
+
+
+
+BEGIN
+    IMPORT_BIKES_FROM_JSON();
+END;
+
+
+
+------------------------------------------
+
+
+
+CREATE OR REPLACE PROCEDURE IMPORT_ORDERS_FROM_JSON
+IS
+    v_file UTL_FILE.FILE_TYPE;
+    v_line VARCHAR2(4000);
+BEGIN
+    v_file := UTL_FILE.FOPEN('ORDERS_JSON', 'ORDERS.JSON', 'R');
+    LOOP
+        BEGIN
+            UTL_FILE.GET_LINE(v_file, v_line);
+            EXIT WHEN v_line IS NULL;
+
+            INSERT INTO ORDERS (BUYER_ID, BIKE_ID, QUANTITY, ORDER_DATE,STATUS)
+            SELECT jt.BUYER_ID, jt.BIKE_ID, jt.QUANTITY, jt.ORDER_DATE, jt.STATUS
+            FROM JSON_TABLE(v_line, '$[*]'
+                COLUMNS (
+                    BUYER_ID PATH '$.BUYER',
+                    BIKE_ID PATH '$.BIKE',
+                    QUANTITY PATH '$.QNT',
+                    ORDER_DATE PATH '$.DATE',
+                    STATUS PATH '$.STATUS'
+                )
+            ) jt;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                EXIT;
+        END;
+    END LOOP;
+    UTL_FILE.FCLOSE(v_file);
+END;
+
+
+
+BEGIN
+    IMPORT_ORDERS_FROM_JSON();
+END;
+
 
 
